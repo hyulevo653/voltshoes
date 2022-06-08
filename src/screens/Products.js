@@ -1,5 +1,4 @@
-import './App.scss';
-import logo from './logo.svg';
+
 import {
   FaSearch,
   FaUser,
@@ -9,36 +8,44 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
-import { products } from './fakeData'
+import { products } from '../fakeData'
+import Header from "../conponents/Header";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getImagePath } from "../indexx";
+import { getProducts } from "../services/api";
+
+
+
 
 function App() {
+  const params = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [data,setData] = useState([]);
+  console.log("location",location);
+
+  const onMoveDetail = (item) => () => {
+    navigate(`/detail/${item.id}`);
+  }
+
+  useEffect(() => {
+    const getAllProducts = async() => {
+      const result = await getProducts();
+      console.log('result',result.data.data);
+      setData(result.data.data)
+    }
+
+     getAllProducts();
+
+  },[]);
+
+  
+  
   return (
     <div>
       {/* header */}
-      <div className='flex flex-row h-14 items-center fixed w-full top-0 z-50'>
-        <div className='flex flex-1 flex-row bg-white px-20 items-center h-full'>
-          <div className='text-gray-300 text-4xl mr-auto cursor-pointer font-bold'>Cee</div>
-          <div className='flex flex-row'>
-            <div className='page-link mr-10 cursor-pointer w-16'>Home</div>
-            <div className='page-link cursor-pointer w-20'>Product</div>
-          </div>
-        </div>
-        <div className='flex w-1/2 h-full flex-row items-center justify-between bg-white'>
-          <div className='ml-4 relative w-64'>
-            <input
-              className='border rounded-full pl-2 w-full h-7'
-              placeholder='Search here'
-            />
-            <FaSearch className='absolute top-1.5 right-2.5' />
-          </div>
-          <div className='flex flex-row'>
-            <FaUser className='text-2xl mr-10 text-gray-300' />
-            <FaHeart className='text-2xl mr-10 text-gray-300' />
-            <FaShoppingCart className='text-2xl mr-10 text-gray-300' />
-            <FiLogOut className='text-2xl mr-10 text-gray-300' />
-          </div>
-        </div>
-      </div>
+      <Header />
 
       {/* product */}
       <div className="head">Products</div>
@@ -182,13 +189,13 @@ function App() {
 
           {/* item */}
           <div className='flex flex-wrap overflow-auto mt-4 -mr-10' style={{ height: 'calc(100vh - 16rem)' }}>
-            {products.map(e => (
+            {data.map(e => (
               <div className='mr-12 mb-12' style={{ width: 'calc(25% - 48px)' }}>
-                <img src={e.img} alt={e.title} className='object-cover h-48 w-full' />
+                <img onClick={onMoveDetail(e)} src={getImagePath(e.images?.[0])} alt={e.title} className='object-cover h-48 w-full' />
                 <div className='p-1'>
-                  <div className='font-bold'>{e.title}</div>
-                  <div>{e.details}</div>
-                  <div>{e.rating}⭐</div>
+                  <div onClick={onMoveDetail(e)} className='font-bold'>{e.title}</div>
+                  <div>{e.name}</div>
+                  <div>{e.star}⭐</div>
                   <div>{e.price}$</div>
                 </div>
                 <div className='bg-gray-800 h-11 flex justify-center items-center uppercase font-medium text-white cursor-pointer'>

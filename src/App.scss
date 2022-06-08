@@ -105,3 +105,16 @@
 .product-container {
   margin: 12.5rem 40px 0px;
 }
+
+//comments
+.wrap-write-review {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-comment {
+  border: 1px solid grey;
+  height: 50px;
+  width: 50%;
+  margin-top: 10px;
+}
