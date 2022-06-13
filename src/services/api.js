@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'http://shoes.hungvu.net/',
+  baseURL: 'http://shoes.hungvu.net',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -14,7 +14,7 @@ export const getProducts = () => {
 };
 
 export const getDetail = (id) => {
-    return api.get(`/products/${id}`);
+    return api.get(`/product/${id}`);
 };
 
 export const getComment = () => {

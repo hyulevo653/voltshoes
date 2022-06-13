@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../conponents/Header";
 
 
+
 function App() {
   const navigate = useNavigate();
   const onMovetoProducts = (data) => (event) => {
